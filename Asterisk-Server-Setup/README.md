@@ -36,10 +36,10 @@ sudo ./configure
 
 ### 6. Enable Required Modules
 ```bash
-make menuselect --enable res_config_mysql \
-                --enable app_mysql \
-                --enable format_mp3 \
-                menuselect.makeopts
+menuselect/menuselect --enable res_config_mysql \
+                       --enable app_mysql \
+                       --enable format_mp3 \
+                       menuselect.makeopts
 ```
 
 ### 7. Compile and Install
