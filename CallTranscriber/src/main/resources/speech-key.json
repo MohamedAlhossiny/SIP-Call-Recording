@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "heroic-charter-462701-e2",
+  "private_key_id": "fe7f5ff964f896c6ed0e1a992c524411d87e63d5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDRecEd+T+8rXyR\nshPSYp3MXnSiWoQWW8q3HvIVQwITVJDnKcBTdB3/0wzShEh/8eiO/T7rVI7BfnFD\nsIK+KWNdATw9FEvPpDfQiIeU2P8uIMUfEXiqAL6zj9zr9YjAQ8A5NPpm+cnFgxTG\nXnzN9WbrAzyteRJqT01yT6fctNmflt07zmpHYDQH497iE0LSUd/iK1whDjRCNePk\ng6zqUi1UTxNagdQYH0Pu0p1mmQRKl2iZ+yhJOVWzi1EFykCm/V2BZFoL1iOtra94\nsDz4ao1bC+0r97qqKb6Ve5cI/IXDff0+i8SPVkqMYVwGUqY3S67atzrY4XdzbA0v\n3ug5UD9PAgMBAAECggEABGYT7RPOOwfb/swITuzgajZtj183n0FfZcfR+fcfQW91\nxegb8GSwbWFtx00dBjrHngEPyi2xyO3+/0ni/o7fiRUJwjD9hCdRpYcu00XydD7r\nhMLlwsQjPQgMJPq4W9LQY+/xD8QdCl29sopKmqFiZa4t689ucipAjEiQVAa9yMEY\nSpwUubRn/A7NWidH/Tm0LdT8OrHNH2WorySl95ncfOmPvsA3VzHmbhdHX5vHitzk\nYpcJr7wWN59mYeSsiHYU/+lQoR1W1lJlpaMews2Oj0nr2BAoFVP9h3sJGSuDuXs3\nuE5EcPJu8DURRz9P8261iugTGQfBMMEsr/pjzU7igQKBgQD9/MlQtRbpPganFFzB\n4KEY7t0GZPqa8DbhDOvDOY55J8isTZByU78216XOqPFB83y7dAhyqiGwmNf3eg35\nX/8ucwpgNszZuYL+P7tbP8DHVdVjDZI/VBpFi2Znw9UKzAD9OJ1kqhwuo0Ojl+EA\njBRJUahU6vfYvCM9YXOsxe7jDwKBgQDTIqz51tQe1r04hMl9BJKkI7cD6JEVnmqW\n81Kn56KJ4MTIZGqcxTkrHaDVpP91NW2h0q52mmjetnhX7cHap2wvNMMDdmU6ij2s\nC3ZaBA21yn1/9wjaowWHWYUGAo6OBBLueiiSRE5oDzY4zPsUIzASdMdkN5EInXiv\ncp9bzMPfwQKBgGGvdeY6oAM5PenI5RwUPyGNzSiGcfRha1oHVC4T1v42FPJgKqwu\nFZ8MNdNUGuZYtaKLMCyZzrdTMc0W/oTpLQY6bMUwjn024nDTJkYkMQr5skaUk6kT\nub8BrHNAWJH8gGzj93UeEBTH6l3jLkC9n5fLdkiizoxnX85dytWqkwR1AoGBAIbq\nQ4oqosVKBwPUpkQC5gmI4OvYcs1Tu1zWA11TgOOGA3jh4dZnmI5akmmy06J8D6A2\nVlFnfdfC1ceqIBOupEzN9EeEIk90AtCrSmde67vctrFMlBXR0jiZFY2vmJRbOhW1\nbbN5fni0L7vAEDjf+1nv0XHSqBTPO00xe29Xu1qBAoGAbeU4DqSGNCNJ2hfQYsL1\n1P25CmZfKJyWgjCskEhrkMFXYoiqXMSq3CZ/fD11PLnd9GF0Yly8xDak2c6RE2VK\nRKmMfkUUnnnXIDNc7+xQUhojWWY2feVgOiGEv7y1rJ1Aq48Ui0oy9CPLERdUU78x\nerX86h/Qr+7Gq/Rsa7NfTEM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "speech-api-access@heroic-charter-462701-e2.iam.gserviceaccount.com",
+  "client_id": "116361554434489674771",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/speech-api-access%40heroic-charter-462701-e2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
