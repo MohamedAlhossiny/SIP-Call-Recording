@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - TexTCom</title>
+    <link rel="icon" type="image/png" th:href="@{/assets/logo.png}"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}"/>
+</head>
+<body>
+    <div class="row m-0">
+        <!-- Left Side with Branding -->
+        <div class="col-md-6 coffee_mug_background">
+            <div class="logo_left mt-3 pt-4 ms-5">
+                <a th:href="@{/}" class="text-decoration-none">
+                    <h2 class="logo text-white">TexTCom <span class="logo_com">.com</span></h2>
+                </a>
+            </div>
+        </div>
+
+        <!-- Right Side with Registration Form -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="myForm w-75">
+                <form th:action="@{/accounts/register}" th:object="${account}" method="post">
+                    <h1 class="text-center font-weight-bold mb-4">Create Account</h1>
+
+                    <!-- Alert Messages -->
+                    <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                        <span th:text="${errorMessage}"></span>
+                    </div>
+                    <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                        <span th:text="${successMessage}"></span>
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="form-group mb-3">
+                        <input type="text" placeholder="Username" th:field="*{username}" class="form-control" required />
+                        <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="form-group mb-3">
+                        <input type="password" placeholder="Password" th:field="*{password}" class="form-control" required />
+                        <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group mb-3">
+                        <input type="email" placeholder="Email" th:field="*{email}" class="form-control" required />
+                        <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    </div>
+
+                    <!-- Full Name Field -->
+                    <div class="form-group mb-3">
+                        <input type="text" placeholder="Full Name" th:field="*{fullName}" class="form-control" required />
+                        <div class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                    </div>
+
+                    <!-- MISDSN Field (Mandatory) - Updated with 4 character limit -->
+                    <div class="form-group mb-3">
+                        <input type="text" placeholder="MISDSN" th:field="*{misdsn}" class="form-control" 
+                               minlength="4" maxlength="4" required 
+                               onkeypress="return onlyNumbers(event)" />
+                        <div class="text-danger" th:if="${#fields.hasErrors('misdsn')}" th:errors="*{misdsn}"></div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group mb-3">
+                        <button type="submit" class="myBtn py-3">Register</button>
+                    </div>
+
+                    <!-- Login Link -->
+                    <p class="text-center">
+                        Already have an account?
+                        <a class="color-text" th:href="@{/accounts/login}">Login here</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script>
+        function onlyNumbers(event) {
+            var charCode = (event.which) ? event.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var misdsnInput = document.querySelector('input[name="misdsn"]');
+            
+            // Enhanced validation for exactly 4 digits
+            misdsnInput.addEventListener('input', function(e) {
+                // Remove non-numeric characters
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                // Limit to 4 characters
+                if (this.value.length > 4) {
+                    this.value = this.value.slice(0, 4);
+                }
+            });
+
+            // Optional: Add visual feedback for length validation
+            misdsnInput.addEventListener('blur', function(e) {
+                if (this.value.length < 4) {
+                    this.classList.add('is-invalid');
+                } else {
+                    this.classList.remove('is-invalid');
+                    this.classList.add('is-valid');
+                }
+            });
+
+            // Remove validation classes when user starts typing
+            misdsnInput.addEventListener('focus', function(e) {
+                this.classList.remove('is-invalid', 'is-valid');
+            });
+        });
+    </script>
+</body>
+</html>

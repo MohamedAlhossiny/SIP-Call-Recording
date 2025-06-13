@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - TexTCom</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/assets/logo.png}"/>
+
+    <style>
+        .about-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .feature-box {
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ff6b00;
+            background: #fff;
+            border-radius: 0 8px 8px 0;
+            transition: transform 0.3s ease;
+        }
+        .feature-box:hover {
+            transform: translateX(10px);
+        }
+        .feature-icon {
+            color: #ff6b00;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #ff6b00;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        .back-button:hover {
+            background: #ff8533;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 107, 0, 0.2);
+        }
+        .logo {
+            color: #ff6b00 !important;
+            cursor: pointer;
+        }
+        .logo_com {
+            cursor: pointer;
+        }
+        .nav-button {
+            display: inline-block;
+            padding: 8px 20px;
+            margin: 0 10px;
+            background: #ff6b00;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .nav-button:hover {
+            background: #ff8533;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 107, 0, 0.2);
+        }
+        .logo_right {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <nav class="main_div">
+        <div class="logo_left">
+            <a th:href="@{/}" class="text-decoration-none">
+                <label class="logo">
+                    TexTCom
+                </label>
+                <label class="logo_com">
+                    .com
+                </label>
+            </a>
+        </div>
+        <div class="logo_right">
+            <a th:href="@{/accounts/login}" class="nav-button">
+                Login
+            </a>
+            <a th:href="@{/accounts/register}" class="nav-button">
+                Register
+            </a>
+        </div>
+    </nav>
+
+    <div class="about-section">
+        <div class="about-content">
+            <h1 class="text-center mb-4">About TexTCom</h1>
+            <p class="lead text-center mb-5">
+                Transforming Telecom Calls into Text - Making Communication More Accessible
+            </p>
+
+            <div class="feature-box">
+                <h3><i class="fa-solid fa-microphone feature-icon"></i>Our Mission</h3>
+                <p>At TexTCom, we specialize in converting recorded telecom calls into accurate, searchable text. Our advanced technology makes it easier to document, analyze, and reference important conversations.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3><i class="fa-solid fa-gear feature-icon"></i>How It Works</h3>
+                <p>Our system processes recorded telecom calls using cutting-edge speech recognition technology. We convert audio into text while maintaining context and accuracy, making it simple to search and reference important information.</p>
+            </div>
+
+            <div class="feature-box">
+                <h3><i class="fa-solid fa-circle-check feature-icon"></i>Key Features</h3>
+                <ul>
+                    <li>High-accuracy speech-to-text conversion</li>
+                    <li>Support for multiple languages and accents</li>
+                    <li>Easy search and reference capabilities</li>
+                    <li>Secure storage and processing</li>
+                    <li>Customizable output formats</li>
+                </ul>
+            </div>
+
+            <div class="feature-box">
+                <h3><i class="fa-solid fa-shield-halved feature-icon"></i>Security & Privacy</h3>
+                <p>We take data security seriously. All calls are processed with strict confidentiality measures, ensuring your information remains private and secure.</p>
+            </div>
+
+            <div class="text-center">
+                <a th:href="@{/}" class="back-button">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <label class="copy-right">Copyright © TexTCom.com</label>
+    </footer>
+
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
