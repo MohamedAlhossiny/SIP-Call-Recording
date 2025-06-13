@@ -1,0 +1,64 @@
+version: '3.8'
+
+networks:
+  asterisk_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1
+
+services:
+  asterisk:
+    build: .
+    container_name: asterisk-server
+    networks:
+      asterisk_net:
+        ipv4_address: 172.20.0.2
+    ports:
+      - "5060:5060/udp"
+      - "5060:5060/tcp"
+      - "16384-16484:16384-16484/udp"
+    volumes:
+      - ./recordings:/var/spool/asterisk/monitor
+      - ./config/asterisk:/etc/asterisk
+      - ./logs:/var/log/asterisk
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: unless-stopped
+    environment:
+      - TZ=UTC
+    healthcheck:
+      test: ["CMD", "asterisk", "-rx", "core show uptime"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    mem_limit: 512m
+    cpus: 1.0
+
+  mysql:
+    image: mysql:8.0
+    container_name: asterisk-mysql
+    networks:
+      asterisk_net:
+        ipv4_address: 172.20.0.3
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: asterisk
+      MYSQL_USER: asterisk
+      MYSQL_PASSWORD: 123
+      TZ: UTC
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./Database.sql:/docker-entrypoint-initdb.d/Database.sql
+    ports:
+      - "13306:3306"
+    restart: unless-stopped
+    command: --default-authentication-plugin=mysql_native_password --max-connections=1000
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123"]
+      interval: 2s
+      timeout: 3s
+      retries: 5
+      start_period: 10s 
