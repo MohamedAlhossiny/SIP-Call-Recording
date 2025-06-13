@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Details - TexTCom</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/assets/logo.png}"/>
+    <style>
+        .view-container {
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .nav-link {
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ff6b00;
+        }
+        .nav-link.active {
+            color: #ff6b00;
+            font-weight: bold;
+        }
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+        }
+        .detail-value {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <span class="text-white">TexTCom</span><span class="text-warning">.com</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/users}">
+                            <i class="fa-solid fa-users"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/calls}">
+                            <i class="fa-solid fa-phone"></i> Calls
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/transcripts}">
+                            <i class="fa-solid fa-file-lines"></i> Transcripts
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <span class="navbar-text me-3">
+                        Welcome, <span th:text="${username}">Admin</span>
+                    </span>
+                    <a th:href="@{/accounts/logout}" class="btn btn-outline-light">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container view-container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header" style="background-color: #ff6b00; color: white;">
+                        <h5 class="mb-0">Call Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Call ID:</div>
+                            <div class="col-md-8 detail-value" th:text="${call.callId}">Call ID</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Calling Party:</div>
+                            <div class="col-md-8 detail-value" th:text="${call.callingParty}">Calling Party</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Called Party:</div>
+                            <div class="col-md-8 detail-value" th:text="${call.calledParty}">Called Party</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Start Time:</div>
+                            <div class="col-md-8 detail-value" th:text="${#temporals.format(call.startTimestamp, 'yyyy-MM-dd HH:mm:ss')}">Start Time</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">End Time:</div>
+                            <div class="col-md-8 detail-value" th:text="${call.endTimestamp != null ? #temporals.format(call.endTimestamp, 'yyyy-MM-dd HH:mm:ss') : 'Ongoing'}">End Time</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Duration:</div>
+                            <div class="col-md-8 detail-value" th:text="${call.duration}">Duration</div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Status:</div>
+                            <div class="col-md-8">
+                                <span th:if="${call.endTimestamp == null}" class="badge bg-success">Active</span>
+                                <span th:unless="${call.endTimestamp == null}" class="badge bg-secondary">Completed</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4 detail-label">Call Transferred:</div>
+                            <div class="col-md-8">
+                                <span th:if="${call.isCallTransferred}" class="badge bg-info">Yes</span>
+                                <span th:unless="${call.isCallTransferred}" class="badge bg-secondary">No</span>
+                            </div>
+                        </div>
+                        <div class="row mb-3" th:if="${call.pathWavFile != null}">
+                            <div class="col-md-4 detail-label">WAV File:</div>
+                            <div class="col-md-8 detail-value" th:text="${call.pathWavFile}">WAV File</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a th:href="@{/admin/calls}" class="btn btn-secondary">
+                                <i class="fa-solid fa-arrow-left"></i> Back to Calls
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html> 

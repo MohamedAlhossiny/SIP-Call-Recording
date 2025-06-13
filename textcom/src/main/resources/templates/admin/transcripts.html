@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcripts - TexTCom</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/assets/logo.png}"/>
+    <style>
+        .transcript-container {
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .nav-link {
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ff6b00;
+        }
+        .nav-link.active {
+            color: #ff6b00;
+            font-weight: bold;
+        }
+        .table th {
+            background-color: #f8f9fa;
+        }
+        .transcript-text {
+            max-width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-phone-volume text-warning"></i>
+                <span class="text-white">TexTCom</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/users}">
+                            <i class="fa-solid fa-users"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/calls}">
+                            <i class="fa-solid fa-phone"></i> Calls
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/transcripts}">
+                            <i class="fa-solid fa-file-lines"></i> Transcripts
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <span class="navbar-text me-3">
+                        Welcome, <span th:text="${username}">Admin</span>
+                    </span>
+                    <a th:href="@{/accounts/logout}" class="btn btn-outline-light">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container transcript-container">
+        <div class="card">
+            <div class="card-header" style="background-color: #ff6b00; color: white;">
+                <h5 class="mb-0">Call Transcripts</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>Call ID</th>
+                                <th>Calling Party</th>
+                                <th>Called Party</th>
+                                <th>Timestamp</th>
+                                <th>Duration</th>
+                                <th>Transcript</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="transcript : ${transcripts}">
+                                <td th:text="${transcript.transactionId}">Transaction ID</td>
+                                <td th:text="${transcript.callId}">Call ID</td>
+                                <td th:text="${transcript.callingParty}">Calling Party</td>
+                                <td th:text="${transcript.calledParty}">Called Party</td>
+                                <td th:text="${#temporals.format(transcript.timestamp, 'yyyy-MM-dd HH:mm:ss')}">Timestamp</td>
+                                <td th:text="${transcript.duration}">Duration</td>
+                                <td>
+                                    <div class="transcript-text" th:text="${transcript.text}">Transcript text...</div>
+                                </td>
+                            </tr>
+                            <tr th:if="${#lists.isEmpty(transcripts)}">
+                                <td colspan="7" class="text-center">No transcripts available</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html> 

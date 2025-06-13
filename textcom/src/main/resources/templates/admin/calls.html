@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calls - TexTCom</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/styles.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/assets/logo.png}"/>
+    <style>
+        .calls-container {
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-link {
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #ff6b00;
+        }
+        .nav-link.active {
+            color: #ff6b00;
+            font-weight: bold;
+        }
+        .status-badge {
+            font-size: 0.85em;
+            padding: 0.35em 0.65em;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-phone-volume text-warning"></i>
+                <span class="text-white">TexTCom</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">
+                            <i class="fa-solid fa-gauge-high"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/users}">
+                            <i class="fa-solid fa-users"></i> Users
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/admin/calls}">
+                            <i class="fa-solid fa-phone"></i> Calls
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/admin/transcripts}">
+                            <i class="fa-solid fa-file-lines"></i> Transcripts
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <span class="navbar-text me-3">
+                        Welcome, <span th:text="${username}">Admin</span>
+                    </span>
+                    <a th:href="@{/accounts/logout}" class="btn btn-outline-light">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container calls-container">
+        <h2 class="mb-4">Call Logs</h2>
+        
+        <!-- Alert Messages -->
+        <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-circle-check"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span th:text="${error}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="card">
+            <div class="card-header" style="background-color: #ff6b00; color: white;">
+                <h5 class="mb-0">Call List</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Call ID</th>
+                            <th scope="col">Calling Party</th>
+                            <th scope="col">Called Party</th>
+                            <th scope="col">Start Time</th>
+                            <th scope="col">End Time</th>
+                            <th scope="col">Duration</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="call : ${calls}">
+                            <td th:text="${call.callId}">Call ID</td>
+                            <td th:text="${call.callingParty}">Calling Party</td>
+                            <td th:text="${call.calledParty}">Called Party</td>
+                            <td th:text="${#temporals.format(call.startTimestamp, 'yyyy-MM-dd HH:mm:ss')}">Start Time</td>
+                            <td th:text="${call.endTimestamp != null ? #temporals.format(call.endTimestamp, 'yyyy-MM-dd HH:mm:ss') : 'Ongoing'}">End Time</td>
+                            <td th:text="${call.duration}">Duration</td>
+                            <td>
+                                <span th:if="${call.endTimestamp == null}" class="badge bg-success">Active</span>
+                                <span th:unless="${call.endTimestamp == null}" class="badge bg-secondary">Completed</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(calls)}">
+                            <td colspan="8" class="text-center">No calls found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+</body>
+</html>
