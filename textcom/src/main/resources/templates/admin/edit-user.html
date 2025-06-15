@@ -93,15 +93,14 @@
                             </div>
                             <div class="mb-3">
                                 <label for="misdsn" class="form-label">MISDSN</label>
-                                <input type="text" class="form-control" id="misdsn" th:field="*{misdsn}" required>
+                                <input type="text" class="form-control" id="misdsn" th:field="*{misdsn}" required disabled>
                             </div>
-                            <!-- <div class="mb-3">
+                            <div class="mb-3">
                                 <label for="role" class="form-label">Role</label>
-                                <select class="form-select" id="role" th:field="*{role}" required>
-                                    <option value="user">User</option>
-                                    <option value="admin">Admin</option>
+                                <select class="form-select" id="role" th:field="*{role}" required disabled>
+                                    <option value="user">USER</option>
                                 </select>
-                            </div> -->
+                            </div>
                             <div class="d-flex justify-content-between">
                                 <a th:href="@{/admin/users}" class="btn btn-secondary">
                                     <i class="fa-solid fa-arrow-left"></i> Back to Users
