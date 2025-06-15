@@ -110,6 +110,7 @@
                             <th scope="col">End Time</th>
                             <th scope="col">Duration</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,6 +125,9 @@
                                 <span th:if="${call.endTimestamp == null}" class="badge bg-success">Active</span>
                                 <span th:unless="${call.endTimestamp == null}" class="badge bg-secondary">Completed</span>
                             </td>
+                            <td>
+                                <button class="btn btn-info btn-sm view-call-details" th:data-callid="${call.callId}">View</button>
+                            </td>
                         </tr>
                         <tr th:if="${#lists.isEmpty(calls)}">
                             <td colspan="8" class="text-center">No calls found.</td>
@@ -134,7 +138,77 @@
         </div>
     </div>
 
+    <!-- Call Details Modal -->
+    <div class="modal fade" id="callDetailsModal" tabindex="-1" aria-labelledby="callDetailsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="callDetailsModalLabel">Call Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="text-primary">Transcript:</h6>
+                    <p id="transcriptContent" class="mb-4"></p>
+                    <h6 class="text-primary">Recording:</h6>
+                    <audio id="callRecording" controls class="w-100"></audio>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.view-call-details').on('click', function() {
+                var callId = $(this).data('callid');
+                
+                // Fetch call details including transcript and WAV file path
+                $.ajax({
+                    url: '/admin/call-details/' + callId,
+                    method: 'GET',
+                    success: function(data) {
+                        // Populate transcript
+                        var transcriptText = '';
+                        if (data.transactionLogs && data.transactionLogs.length > 0) {
+                            data.transactionLogs.forEach(function(log) {
+                                transcriptText += '<strong>[' + new Date(log.timestamp).toLocaleTimeString() + ']</strong> ' + log.text + '<br>';
+                            });
+                        } else {
+                            transcriptText = 'No transcript available for this call.';
+                        }
+                        $('#transcriptContent').html(transcriptText);
+
+                        // Populate audio recording
+                        var audioPlayer = $('#callRecording')[0];
+                        if (data.pathWavFile) {
+                            audioPlayer.src = '/audio/' + callId; // Assuming an endpoint to serve audio
+                            audioPlayer.load();
+                        } else {
+                            audioPlayer.src = '';
+                            audioPlayer.pause();
+                            // Optionally, hide or disable the audio player if no file
+                        }
+
+                        $('#callDetailsModal').modal('show');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching call details:', error);
+                        alert('Failed to load call details. Please try again.');
+                    }
+                });
+            });
+
+            // Stop audio when modal is closed
+            $('#callDetailsModal').on('hidden.bs.modal', function () {
+                var audioPlayer = $('#callRecording')[0];
+                audioPlayer.pause();
+                audioPlayer.currentTime = 0;
+            });
+        });
+    </script>
 </body>
 </html>

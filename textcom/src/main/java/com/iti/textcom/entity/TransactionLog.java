@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "transactionlogs")
@@ -21,6 +22,7 @@ public class TransactionLog {
     
     @ManyToOne
     @JoinColumn(name = "CallID")
+    @JsonIgnore
     private CallLog callLog;
     
     @Column(name = "Text")

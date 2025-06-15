@@ -21,9 +21,18 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.http.ResponseEntity;
+import com.iti.textcom.entity.TransactionLog;
+import com.iti.textcom.repository.TransactionLogRepository;
 
 @Controller
 public class AdminController {
+
+    private static final Logger log = LoggerFactory.getLogger(AdminController.class);
 
     @Autowired
     private SessionService sessionService;
@@ -42,6 +51,9 @@ public class AdminController {
 
     @Autowired
     private SipFriendRepository sipFriendRepository;
+
+    @Autowired
+    private TransactionLogRepository transactionLogRepository;
 
     @GetMapping("/admin/dashboard")
     public String dashboard(HttpSession session, Model model) {
@@ -169,10 +181,14 @@ public class AdminController {
         }
 
         Accounts userToDelete = userOpt.get();
+        long adminCount = accountsRepository.countByRole(Role.ADMIN);
+        
+        log.info("Attempting to delete user: {}", userToDelete.getUsername());
+        log.info("User role: {}, Admin count: {}", userToDelete.getRole(), adminCount);
 
         // Prevent deleting the last admin
         if (userToDelete.getRole() == Role.ADMIN && 
-            accountsRepository.countByRole(Role.ADMIN) <= 1) {
+            adminCount <= 1) {
             redirectAttributes.addFlashAttribute("error", "Cannot delete the last admin user");
             return "redirect:/admin/users";
         }
@@ -246,5 +262,39 @@ public class AdminController {
         model.addAttribute("role", account.getRole());
         
         return "admin/profile";
+    }
+
+    @GetMapping("/admin/call-details/{callId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getCallDetails(@PathVariable Long callId, HttpSession session) {
+        if (!sessionService.isUserLoggedIn(session)) {
+            return ResponseEntity.status(401).build(); // Unauthorized
+        }
+        Accounts account = sessionService.getLoggedInUser(session);
+        if (account.getRole() != Role.ADMIN) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        Optional<CallLog> callLogOptional = callLogRepository.findById(callId);
+
+        if (callLogOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        CallLog call = callLogOptional.get();
+
+        List<TransactionLog> transactionLogs = transactionLogRepository.findByCallLog_CallIdOrderByTimestampAsc(callId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("callId", call.getCallId());
+        response.put("startTimestamp", call.getStartTimestamp());
+        response.put("endTimestamp", call.getEndTimestamp());
+        response.put("callingParty", call.getCallingParty());
+        response.put("calledParty", call.getCalledParty());
+        response.put("pathWavFile", call.getPathWavFile());
+        response.put("isCallTransferred", call.getIsCallTransferred());
+        response.put("transactionLogs", transactionLogs);
+
+        return ResponseEntity.ok(response);
     }
 }

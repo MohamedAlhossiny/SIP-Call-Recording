@@ -24,4 +24,6 @@ public interface TransactionLogRepository extends JpaRepository<TransactionLog, 
     // Find transcripts for calls where the user is either calling or called party
     List<TransactionLog> findByCallLog_CallingPartyOrCallLog_CalledPartyOrderByTimestampDesc(
         String callingParty, String calledParty);
+
+    List<TransactionLog> findByCallLog_CallIdOrderByTimestampAsc(Long callId);
 } 

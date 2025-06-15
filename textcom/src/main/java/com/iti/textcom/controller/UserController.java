@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.iti.textcom.entity.Accounts;
 import com.iti.textcom.entity.CallLog;
@@ -15,6 +18,9 @@ import com.iti.textcom.services.SessionService;
 
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -75,5 +81,41 @@ public class UserController {
         model.addAttribute("transcripts", transcripts);
         
         return "user/transcripts";
+    }
+
+    @GetMapping("/user/call-details/{callId}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> getCallDetails(@PathVariable Long callId, HttpSession session) {
+        if (!sessionService.isUserLoggedIn(session)) {
+            return ResponseEntity.status(401).build(); // Unauthorized
+        }
+        Accounts account = sessionService.getLoggedInUser(session);
+
+        Optional<CallLog> callLogOptional = callLogRepository.findById(callId);
+
+        if (callLogOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        CallLog call = callLogOptional.get();
+
+        // Ensure the call belongs to the logged-in user
+        if (!call.getCallingParty().equals(account.getMisdsn()) && !call.getCalledParty().equals(account.getMisdsn())) {
+            return ResponseEntity.status(403).build(); // Forbidden
+        }
+
+        List<TransactionLog> transactionLogs = transactionLogRepository.findByCallLog_CallIdOrderByTimestampAsc(callId);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("callId", call.getCallId());
+        response.put("startTimestamp", call.getStartTimestamp());
+        response.put("endTimestamp", call.getEndTimestamp());
+        response.put("callingParty", call.getCallingParty());
+        response.put("calledParty", call.getCalledParty());
+        response.put("pathWavFile", call.getPathWavFile());
+        response.put("isCallTransferred", call.getIsCallTransferred());
+        response.put("transactionLogs", transactionLogs);
+
+        return ResponseEntity.ok(response);
     }
 }
