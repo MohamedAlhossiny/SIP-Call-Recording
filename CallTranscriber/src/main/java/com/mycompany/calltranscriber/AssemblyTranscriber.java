@@ -26,7 +26,7 @@ public class AssemblyTranscriber {
         // 2️⃣ إرسال طلب الترانسكرايب
         JSONObject requestBody = new JSONObject();
         requestBody.put("audio_url", uploadUrl);
-        requestBody.put("language_code", "ar");          // ✅ اللغة العربية
+        requestBody.put("language_code", "en");          // ✅ اللغة العربية
         requestBody.put("speech_model", "nano");         // ✅ استخدام النموذج المناسب
 
         HttpRequest transcribeRequest = HttpRequest.newBuilder()

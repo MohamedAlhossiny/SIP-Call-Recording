@@ -8,7 +8,7 @@ import java.util.List;
 public class CallProcessor {
     public static void main(String[] args) {
         try (
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/asterisk", "asterisk", "123");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/asterisk", "asterisk", "123");
             Statement stmt = conn.createStatement();
         ) {
             System.out.println("Starting...");
@@ -21,7 +21,6 @@ public class CallProcessor {
                 while (rs.next()) {
                     int callId = rs.getInt("CallID");
                     String path = rs.getString("Path_WAV_File");
-
                     System.out.println("🎧 Processing  CallID: " + callId);
 
                    
@@ -34,7 +33,7 @@ public class CallProcessor {
                     }
 
                     String transcript = AssemblyTranscriber.transcribe(wavFile);
-                    System.out.println("📝 Arabic Transcript: " + transcript);
+                    System.out.println("📝 Transcript: " + transcript);
 
                     if (transcript != null) {
                         
