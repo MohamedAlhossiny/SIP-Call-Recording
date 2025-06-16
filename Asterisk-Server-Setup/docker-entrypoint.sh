@@ -8,7 +8,11 @@ RETRY_DELAY=2
 
 echo "Waiting for MySQL to be ready..."
 for i in $(seq 1 $MAX_RETRIES); do
+<<<<<<< HEAD
+    if nc -z 127.0.0.1 3306; then
+=======
     if nc -z mysql 3306; then
+>>>>>>> ee30bdb6c5f2cbe0463f79bd52b5fc80b53677c2
         echo "MySQL is ready!"
         break
     fi
